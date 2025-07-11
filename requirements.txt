@@ -13,4 +13,3 @@ pypandoc
 python-dotenv
 requests
 huggingface_hub
-python-multipart

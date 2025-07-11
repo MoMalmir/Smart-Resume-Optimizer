@@ -12,7 +12,7 @@ app = FastAPI()
 # Allow frontend (like React) to connect
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, use specific domains
+    allow_origins=["*"],  # In production, specify allowed domains
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -30,21 +30,26 @@ async def optimize_and_export_resume(
     job_description: str = Form(...),
     api_key: str = Form(...),
     custom_prompt: str = Form(...),
-    cache_key: str = Form(""),
+    cache_key: str = Form(None),
     use_cache: bool = Form(False),
 ):
     resume_bytes = await resume.read()
     resume_text = extract_text_from_pdf(io.BytesIO(resume_bytes))
 
+    # Cache API key if user opted in
     if use_cache and cache_key:
-        session_cache[cache_key] = {"key": api_key, "expires": time.time() + 1800}
+        session_cache[cache_key] = {
+            "key": api_key,
+            "expires": time.time() + 1800
+        }
 
+    # Retrieve from cache if exists and still valid
     key_to_use = api_key
     if use_cache and cache_key in session_cache:
         if session_cache[cache_key]["expires"] > time.time():
             key_to_use = session_cache[cache_key]["key"]
         else:
-            del session_cache[cache_key]
+            del session_cache[cache_key]  # expired
 
     tailored = get_tailored_resume(
         resume_text=resume_text,
