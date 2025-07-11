@@ -22,7 +22,7 @@ session_cache = {}
 
 @app.get("/")
 def home():
-    return {"message": "Resume Optimizer is live!"}
+    return {"message": "Resume Optimizer is live!"} 
 
 @app.post("/optimize-and-export")
 async def optimize_and_export_resume(
@@ -36,12 +36,13 @@ async def optimize_and_export_resume(
     resume_bytes = await resume.read()
     resume_text = extract_text_from_pdf(io.BytesIO(resume_bytes))
 
-    # Cache API key if user opted in
+    # Cache API key
     if use_cache and cache_key:
         session_cache[cache_key] = {
             "key": api_key,
             "expires": time.time() + 1800
         }
+
 
     # Retrieve from cache if exists and still valid
     key_to_use = api_key
@@ -49,7 +50,7 @@ async def optimize_and_export_resume(
         if session_cache[cache_key]["expires"] > time.time():
             key_to_use = session_cache[cache_key]["key"]
         else:
-            del session_cache[cache_key]  # expired
+            del session_cache[cache_key]
 
     tailored = get_tailored_resume(
         resume_text=resume_text,

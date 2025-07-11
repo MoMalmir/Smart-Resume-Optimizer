@@ -10,7 +10,6 @@ def get_tailored_resume(
         base_url="https://openrouter.ai/api/v1"
     )
 
-
     user_prompt = f"""
     JOB DESCRIPTION:
     {job_description}
@@ -27,6 +26,10 @@ def get_tailored_resume(
         messages=[{"role": "user", "content": user_prompt}],
         temperature=0.4,
         max_tokens=1500,
+
     )
 
     return response.choices[0].message.content
+
+
+
