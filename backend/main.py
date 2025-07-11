@@ -1,21 +1,28 @@
 from fastapi import FastAPI, UploadFile, File, Form
-from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse, StreamingResponse
 import io
 import time
 from backend.parser import extract_text_from_pdf
 from backend.llm_interface import get_tailored_resume
-from fastapi.responses import StreamingResponse
-#from backend.latex_exporter import render_latex_resume
 from backend.pdf_render_pandoc import render_pandoc_resume
 
 app = FastAPI()
-session_cache = {}
 
+# Allow frontend (like React) to connect
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, use specific domains
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+session_cache = {}
 
 @app.get("/")
 def home():
     return {"message": "Resume Optimizer is live!"}
-
 
 @app.post("/optimize-and-export")
 async def optimize_and_export_resume(
@@ -46,9 +53,8 @@ async def optimize_and_export_resume(
         prompt=custom_prompt,
     )
 
-    # Generate PDF from Markdown
     pdf_bytes = render_pandoc_resume(tailored)
-    
+
     return StreamingResponse(
         io.BytesIO(pdf_bytes),
         media_type="application/pdf",
