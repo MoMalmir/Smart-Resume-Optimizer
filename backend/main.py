@@ -7,6 +7,7 @@ from backend.parser import extract_text_from_pdf
 from backend.llm_interface import get_tailored_resume
 from backend.pdf_render_pandoc import render_pandoc_resume
 
+
 app = FastAPI()
 
 # Allow frontend (like React) to connect
@@ -58,6 +59,7 @@ async def optimize_and_export_resume(
         api_key=key_to_use,
         prompt=custom_prompt,
     )
+
 
     pdf_bytes = render_pandoc_resume(tailored)
 
