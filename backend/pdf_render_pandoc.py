@@ -22,6 +22,7 @@ def render_pandoc_resume(markdown_text: str) -> bytes:
              "--pdf-engine=xelatex",
             "--template", template_path, 
             "-V", "geometry:margin=0.4in"                           
+
         ], check=True)
 
         # Read PDF bytes
