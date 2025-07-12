@@ -1,7 +1,6 @@
 # backend/llm_interface.py
 
 from openai import OpenAI
-
 def get_tailored_resume(
     resume_text: str, job_description: str, api_key: str, prompt: str = "",  model: str = "anthropic/claude-3.7-sonnet"  # default fallback
 ) -> str:
@@ -9,6 +8,7 @@ def get_tailored_resume(
         api_key=api_key,
         base_url="https://openrouter.ai/api/v1"
     )
+
 
     user_prompt = f"""
     JOB DESCRIPTION:
@@ -30,6 +30,3 @@ def get_tailored_resume(
     )
 
     return response.choices[0].message.content
-
-
-
