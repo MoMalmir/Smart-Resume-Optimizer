@@ -26,6 +26,7 @@ def render_latex_resume(content: str) -> bytes:
         
         print(result.stdout.decode())
         print(result.stderr.decode())
+
         pdf_path = os.path.join(tmpdir, "resume.pdf")
         if not os.path.exists(pdf_path):
             raise RuntimeError("PDF generation failed")
