@@ -27,4 +27,3 @@ def render_pandoc_resume(markdown_text: str) -> bytes:
         # Read PDF bytes
         with open(pdf_path, "rb") as f:
             return f.read()
-
