@@ -10,6 +10,7 @@ from backend.pdf_render_pandoc import render_pandoc_resume
 
 
 
+
 app = FastAPI()
 
 # Allow frontend (like React) to connect
@@ -68,6 +69,7 @@ async def optimize_and_export_resume(
 
 
     pdf_bytes = render_pandoc_resume(tailored)
+
 
 
     return StreamingResponse(
