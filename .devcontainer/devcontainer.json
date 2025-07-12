@@ -15,7 +15,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "make install",
+	"postCreateCommand": "make install && source .venv/bin/activate && echo 'source .venv/bin/activate' >> ~/.bashrc",
 
 	// Configure tool-specific properties.
 	"customizations": {
