@@ -19,9 +19,10 @@ def render_pandoc_resume(markdown_text: str) -> bytes:
         subprocess.run([
             "pandoc", md_path,
             "-o", pdf_path,
-             "--pdf-engine=xelatex",
+            "--pdf-engine=xelatex",
             "--template", template_path, 
             "-V", "geometry:margin=0.4in"                           
+
 
         ], check=True)
 
