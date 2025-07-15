@@ -9,8 +9,6 @@ def render_pandoc_resume(markdown_text: str) -> bytes:
         pdf_path = os.path.join(tmpdir, "resume.pdf")
         template_path = os.path.join(os.path.dirname(__file__), "custom_resume_template.tex")
 
-
-
         # Save markdown content
         with open(md_path, "w", encoding="utf-8") as f:
             f.write(markdown_text)
