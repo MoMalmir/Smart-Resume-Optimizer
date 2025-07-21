@@ -20,13 +20,14 @@
 
 FROM pandoc/extra:latest
 
+RUN apk --no--cache python3 py3-pip ttf-freefont
+
 WORKDIR /app
 COPY . /app
 
-RUN apk add --no-cache ttf-freefont
-RUN apk add --no-cache python3 py3-pip
-RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
 
 EXPOSE 8501
 ENTRYPOINT [ "streamlit" ]
-CMD ["run", "Run_App.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.enableCORS=false", "--server.enableXsrfProtection=false"]
+CMD ["run", "app.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.enableCORS=false", "--server.enableXsrfProtection=false"]
