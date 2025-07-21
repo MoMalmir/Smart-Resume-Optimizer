@@ -20,4 +20,5 @@ jobs:
           git config --global user.email "malmir.edumail@gmail.com"
           git config --global user.name "msmalmir"
           git remote set-url origin https://username:${HF_TOKEN}@huggingface.co/spaces/msmalmir/smart-resume-optimizer
+          git pull origin main --rebase --allow-unrelated-histories
           git push origin main
