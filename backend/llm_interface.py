@@ -42,19 +42,6 @@ def get_tailored_resume(
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 # from openai import OpenAI
 
 

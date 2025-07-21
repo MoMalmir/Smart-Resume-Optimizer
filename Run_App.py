@@ -46,7 +46,7 @@ custom_prompt = st.text_area("Custom prompt for fine-tuning (optional)", height=
 
 # --- Model selection ---
 model_name = st.text_input(
-    "Model name (from OpenRouter)",
+    "Model name (from OpenRouter e.g. gpt-4-turbo, anthropic/claude-3.7-sonnet, moonshotai/kimi-k2)",
     value="gpt-4-turbo",  # default value
     help="Enter any model ID supported by OpenRouter (e.g. gpt-4-turbo, anthropic/claude-3-haiku, moonshotai/kimi-k2)"
 )
