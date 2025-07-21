@@ -44,6 +44,13 @@ if use_cache:
 # --- Prompt customization (optional) ---
 custom_prompt = st.text_area("Custom prompt for fine-tuning (optional)", height=300)
 
+# --- Model selection ---
+model_name = st.text_input(
+    "Model name (from OpenRouter)",
+    value="gpt-4-turbo",  # default value
+    help="Enter any model ID supported by OpenRouter (e.g. gpt-4-turbo, anthropic/claude-3-haiku, moonshotai/kimi-k2)"
+)
+
 # --- Job info ---
 job_title = st.text_input("Job Title", placeholder="e.g. Data Scientist")
 company_name = st.text_input("Company Name", placeholder="e.g. OpenAI")
@@ -62,8 +69,10 @@ if st.button("✨ Optimize Resume"):
                 resume_text=resume_text,
                 job_description=job_description,
                 api_key=api_key,
-                prompt=custom_prompt
-            )
+                prompt=custom_prompt,
+                model=model_name  
+                  
+    )
 
         pdf_bytes = render_pandoc_resume(tailored_md)
 
