@@ -1,0 +1,15 @@
+pylint
+pytest
+black
+fastapi
+uvicorn
+openai
+markdown 
+streamlit
+pdfplumber
+python-multipart
+PyMuPDF
+pypandoc
+python-dotenv
+requests
+huggingface_hub
