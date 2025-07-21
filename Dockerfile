@@ -28,6 +28,8 @@ COPY . /app
 RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 
 
-EXPOSE 8501
+ENV HOME=/app
+
+EXPOSE 7860
 ENTRYPOINT [ "streamlit" ]
 CMD ["run", "app.py", "--server.port=7860", "--server.address=0.0.0.0", "--server.enableCORS=false", "--server.enableXsrfProtection=false"]
