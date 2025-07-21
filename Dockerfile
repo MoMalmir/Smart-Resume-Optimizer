@@ -30,4 +30,4 @@ RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 
 EXPOSE 8501
 ENTRYPOINT [ "streamlit" ]
-CMD ["run", "app.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.enableCORS=false", "--server.enableXsrfProtection=false"]
+CMD ["run", "app.py", "--server.port=7860", "--server.address=0.0.0.0", "--server.enableCORS=false", "--server.enableXsrfProtection=false"]
