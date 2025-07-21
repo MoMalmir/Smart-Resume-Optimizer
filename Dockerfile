@@ -20,12 +20,12 @@
 
 FROM pandoc/extra:latest
 
-RUN apk --no--cache python3 py3-pip ttf-freefont
+RUN apk add --no--cache python3 py3-pip ttf-freefont
 
 WORKDIR /app
 COPY . /app
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 
 EXPOSE 8501
