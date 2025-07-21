@@ -25,7 +25,7 @@ RUN apk add --no-cache python3 py3-pip ttf-freefont
 WORKDIR /app
 COPY . /app
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 
 
 EXPOSE 8501
