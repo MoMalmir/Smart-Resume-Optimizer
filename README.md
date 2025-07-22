@@ -16,6 +16,9 @@ Smart Resume Optimizer helps job seekers generate **tailored, optimized resumes*
 [![🤗 Spaces](https://img.shields.io/badge/🤗%20Spaces-Deployed-blue)](https://huggingface.co/spaces/msmalmir/smart-resume-optimizer)
 
 ---
+![Demo](assets/demo.gif)
+
+---
 
 ## 📚 Table of Contents
 
