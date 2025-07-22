@@ -13,7 +13,7 @@ pinned: false
 
 Smart Resume Optimizer helps job seekers generate **tailored, optimized resumes** based on job descriptions using LLMs via [OpenRouter](https://openrouter.ai/). It supports models like Claude 3, GPT-4, Mistral, DeepSeek, and more.
 
-[![🤗 Spaces](https://img.shields.io/badge/🤗%20Spaces-Deployed-blue)](https://huggingface.co/spaces/msmalmir/smart-resume-optimizer)
+[![🤗 Spaces](https://img.shields.io/badge/🤗%20Spaces-Deployed-blue)](https://huggingface.co/spaces/momalmir/smart-resume-optimizer)
 
 ---
 ![Demo](assets/demo.gif)
@@ -100,7 +100,7 @@ Visit [http://localhost:7860](http://localhost:7860) after the container starts.
 ### 🧪 Manual Setup (No Docker)
 
 ```bash
-git clone https://github.com/msmalmir/Smart-Resume-Optimizer.git
+git clone https://github.com/momalmir/Smart-Resume-Optimizer.git
 cd Smart-Resume-Optimizer
 python -m venv .venv
 source .venv/bin/activate
@@ -137,7 +137,7 @@ To deploy:
 ## 🙋‍♂️ Author
 
 📧 Email: [ms.malmir@gmail.com](mailto:ms.malmir@gmail.com)  
-🔗 GitHub: [github.com/msmalmir](https://github.com/msmalmir)
+🔗 GitHub: [github.com/momalmir](https://github.com/momalmir)
 🔗 LinkedIn: [https://www.linkedin.com/in/mostafa-malmir/](https://www.linkedin.com/in/mostafa-malmir/)
 
 <!-- GITHUB DEV DOCS END -->
