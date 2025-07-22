@@ -133,6 +133,8 @@ To deploy:
 
 ## 🙋‍♂️ Author
 
-Built with ❤️ by [@msmalmir](https://github.com/msmalmir)
+📧 Email: [ms.malmir@gmail.com](mailto:ms.malmir@gmail.com)  
+🔗 GitHub: [github.com/msmalmir](https://github.com/msmalmir)
+🔗 LinkedIn: [https://www.linkedin.com/in/mostafa-malmir/](https://www.linkedin.com/in/mostafa-malmir/)
 
 <!-- GITHUB DEV DOCS END -->
