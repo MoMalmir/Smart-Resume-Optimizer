@@ -22,12 +22,23 @@ Use the sidebar to navigate between:
 """)
 
 # --- Upload PDF Resume ---
-uploaded_file = st.file_uploader("Upload your resume (PDF only)", type=["pdf"])
+st.subheader("📄 Upload Resume")
+uploaded_file = st.file_uploader("**Your resume (PDF only)**", type=["pdf"])
 
 # --- API Key + Caching ---
-api_key = st.text_input("Your OpenAI API key", type="password")
-use_cache = st.checkbox("Remember this API key for this session?")
-cache_duration = st.slider("How long to keep the key (minutes)", min_value=5, max_value=60, value=30)
+st.subheader("🔐 API Key & Model")
+api_key = st.text_input(
+    "🔑 **OpenRouter API Key**",
+    placeholder="Paste your OpenRouter API key here",
+    type="password",
+    help="Supports models from Claude, GPT-4, Mistral, etc."
+)
+st.markdown(
+    "Don't have an API key? [Get one here](https://openrouter.ai/) _(free & paid models available)_"
+)
+
+use_cache = st.checkbox("🗃️ Remember this API key for this session?")
+cache_duration = st.slider("⏱️ How long to cache (minutes)", min_value=5, max_value=60, value=30)
 cache_key = "api_key"
 
 if use_cache:
@@ -42,25 +53,31 @@ if use_cache:
             del st.session_state[cache_key]
 
 # --- Prompt customization (optional) ---
-custom_prompt = st.text_area("Custom prompt for fine-tuning", height=300)
+st.subheader("✏️ Prompt & Personalization")
+
+custom_prompt = st.text_area("📝 **Custom prompt** _(optional)_", height=250)
 
 # --- Model selection ---
 model_name = st.text_input(
-    "Model name (from OpenRouter e.g. anthropic/claude-3.7-sonnet,anthropic/claude-sonnet-4, gpt-4-turbo, deepseek/deepseek-chat-v3-0324)",
+    "🧠 **Model name** (from OpenRouter e.g. anthropic/claude-3.7-sonnet,anthropic/claude-sonnet-4, gpt-4-turbo, deepseek/deepseek-chat-v3-0324)",
     value="anthropic/claude-3.7-sonnet",  # default value
     help="Enter any model ID supported by OpenRouter (e.g. anthropic/claude-3.7-sonnet,anthropic/claude-sonnet-4, gpt-4-turbo, deepseek/deepseek-chat-v3-0324)"
 )
 
 # --- Optional full name input ---
-full_name = st.text_input("Full name (optional)", placeholder="e.g. John_Doe")
+full_name = st.text_input("👤 **Your full name** _(optional)_", placeholder="e.g. John_Doe")
 
 
 # --- Job info ---
-job_title = st.text_input("Job Title", placeholder="e.g. Data Scientist")
-company_name = st.text_input("Company Name", placeholder="e.g. OpenAI")
-job_description = st.text_area("Paste the job description here", height=300)
+st.subheader("💼 Job Info")
+
+job_title = st.text_input("📌 **Job Title**", placeholder="e.g. Data Scientist")
+company_name = st.text_input("🏢 **Company Name**", placeholder="e.g. Hugging Face")
+job_description = st.text_area("🧾 **Job Description**", height=250)
 
 # --- Process Resume ---
+st.subheader("🚀 Optimize")
+
 if st.button("✨ Optimize Resume"):
     if not uploaded_file or not job_description or not api_key:
         st.error("Please fill out all required fields.")
@@ -74,37 +91,31 @@ if st.button("✨ Optimize Resume"):
                 job_description=job_description,
                 api_key=api_key,
                 prompt=custom_prompt,
-                model=model_name  
-                  
-    )
+                model=model_name
+            )
 
-        pdf_bytes = render_pandoc_resume(tailored_md)
+            pdf_bytes = render_pandoc_resume(tailored_md)
 
-        # Custom file name
-        if full_name:
-            safe_name = full_name.replace(" ", "_")
-        else:
-            # Basic fallback: take first 2 words from resume
-            words = resume_text.strip().split()
-            if len(words) >= 2:
-                safe_name = f"{words[0]}_{words[1]}"
+            if full_name:
+                safe_name = full_name.replace(" ", "_")
             else:
-                safe_name = ""
+                words = resume_text.strip().split()
+                safe_name = f"{words[0]}_{words[1]}" if len(words) >= 2 else "Anonymous"
 
-        safe_job = job_title.replace(" ", "_")
-        safe_company = company_name.replace(" ", "_")
-        file_name = f"{safe_name}_{safe_job}_{safe_company}.pdf"
+            safe_job = job_title.replace(" ", "_")
+            safe_company = company_name.replace(" ", "_")
+            file_name = f"{safe_name}_{safe_job}_{safe_company}.pdf"
 
-        # Preview in browser
-        base64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
-        pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="1200" height="700" type="application/pdf"></iframe>'
-        st.markdown(pdf_display, unsafe_allow_html=True)
+            # Show preview
+            base64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
+            pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="1200" height="700" type="application/pdf"></iframe>'
+            st.markdown(pdf_display, unsafe_allow_html=True)
 
-        # Download
-        st.download_button(
-            label="📥 Download Optimized Resume",
-            data=pdf_bytes,
-            file_name=file_name,
-            mime="application/pdf"
-        )
+            # Download button
+            st.download_button(
+                label="📥 Download Optimized Resume",
+                data=pdf_bytes,
+                file_name=file_name,
+                mime="application/pdf"
+            )
         
