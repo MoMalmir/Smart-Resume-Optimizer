@@ -42,14 +42,18 @@ if use_cache:
             del st.session_state[cache_key]
 
 # --- Prompt customization (optional) ---
-custom_prompt = st.text_area("Custom prompt for fine-tuning (optional)", height=300)
+custom_prompt = st.text_area("Custom prompt for fine-tuning", height=300)
 
 # --- Model selection ---
 model_name = st.text_input(
-    "Model name (from OpenRouter e.g. gpt-4-turbo, anthropic/claude-3.7-sonnet, moonshotai/kimi-k2)",
-    value="gpt-4-turbo",  # default value
-    help="Enter any model ID supported by OpenRouter (e.g. gpt-4-turbo, anthropic/claude-3-haiku, moonshotai/kimi-k2)"
+    "Model name (from OpenRouter e.g. anthropic/claude-3.7-sonnet,anthropic/claude-sonnet-4, gpt-4-turbo, deepseek/deepseek-chat-v3-0324)",
+    value="anthropic/claude-3.7-sonnet",  # default value
+    help="Enter any model ID supported by OpenRouter (e.g. anthropic/claude-3.7-sonnet,anthropic/claude-sonnet-4, gpt-4-turbo, deepseek/deepseek-chat-v3-0324)"
 )
+
+# --- Optional full name input ---
+full_name = st.text_input("Full name (optional)", placeholder="e.g. John_Doe")
+
 
 # --- Job info ---
 job_title = st.text_input("Job Title", placeholder="e.g. Data Scientist")
@@ -77,11 +81,20 @@ if st.button("✨ Optimize Resume"):
         pdf_bytes = render_pandoc_resume(tailored_md)
 
         # Custom file name
+        if full_name:
+            safe_name = full_name.replace(" ", "_")
+        else:
+            # Basic fallback: take first 2 words from resume
+            words = resume_text.strip().split()
+            if len(words) >= 2:
+                safe_name = f"{words[0]}_{words[1]}"
+            else:
+                safe_name = ""
+
         safe_job = job_title.replace(" ", "_")
         safe_company = company_name.replace(" ", "_")
-        base_name = uploaded_file.name.split('.')[0]
-        file_name = f"{base_name}_{safe_job}_{safe_company}.pdf"
-        
+        file_name = f"{safe_name}_{safe_job}_{safe_company}.pdf"
+
         # Preview in browser
         base64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="1200" height="700" type="application/pdf"></iframe>'
