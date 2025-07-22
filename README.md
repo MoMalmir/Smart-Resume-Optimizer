@@ -37,9 +37,11 @@ Smart Resume Optimizer helps job seekers generate **tailored, optimized resumes*
 
 1. Upload your **PDF resume**
 2. Paste the **job description** you're targeting
-3. (Optional) Add a **custom prompt** or specify your **LLM model**
-4. Click "Optimize" ✨
-5. View and download your tailored resume as a **PDF**
+3. Enter a **custom prompt** with instructions for tailoring 
+4. (Optional) Choose a **model**
+5. Click "Optimize" ✨
+6. View and download your tailored resume as a **PDF**
+
 
 The system supports any model on OpenRouter, including:
 
@@ -66,6 +68,7 @@ To use the hosted app, you’ll need:
 
 - 📄 A resume in **PDF format**
 - 📋 A job description you're applying to
+- ✍️ A **custom prompt** describing how to tailor the resume
 - 🔑 An **OpenRouter API key** (sign up at [openrouter.ai](https://openrouter.ai/))
 
 ---
