@@ -1,6 +1,7 @@
 name: Deploy to Hugging Face Spaces
 
 on:
+  # You can enable this to deploy on every push to main
   # push:
   #   branches:
   #     - main  
@@ -9,16 +10,19 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout GitHub repo
         uses: actions/checkout@v3
 
-      - name: Push to Hugging Face Spaces
+      - name: Configure Git
+        run: |
+          git config --global user.name "msmalmir"
+          git config --global user.email "ms.malmir@gmail.com"
+
+      - name: Force push to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          git config --global user.email "malmir.edumail@gmail.com"
-          git config --global user.name "msmalmir"
-          git remote set-url origin https://username:${HF_TOKEN}@huggingface.co/spaces/msmalmir/smart-resume-optimizer
-          git pull origin main --rebase --allow-unrelated-histories
-          git push origin main
+          git remote add hf https://msmalmir:${HF_TOKEN}@huggingface.co/spaces/msmalmir/smart-resume-optimizer
+          git push hf main --force
