@@ -11,7 +11,8 @@
 	},
 
 	"forwardPorts": [8501],
-	"postCreateCommand": "sudo apt-get update && sudo apt-get install -y curl unzip awscli pandoc texlive-latex-base texlive-fonts-recommended texlive-latex-extra texlive-xetex fonts-freefont-ttf && python3 -m venv .venv && source .venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt && echo 'source .venv/bin/activate'  >> ~/.bashrc",
+	"postCreateCommand": "git lfs install && sudo apt-get update && sudo apt-get install -y curl unzip awscli git-lfs pandoc texlive-latex-base texlive-fonts-recommended texlive-latex-extra texlive-xetex fonts-freefont-ttf && python3 -m venv .venv && source .venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt && echo 'source .venv/bin/activate'  >> ~/.bashrc",
+
 
 	// Configure tool-specific properties.
 	"customizations": {
