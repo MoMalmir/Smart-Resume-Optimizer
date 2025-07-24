@@ -127,7 +127,7 @@ if st.button("✨ Optimize Resume"):
 # --- Extract Skills Section ---
 st.subheader("🧠 Extract Skills from Resume")
 skill_model = st.text_input(
-    "🔍 Model for Skill Extraction",
+    "🔍 Model for Skill Extraction (use a lightweight model for faster performance and lower cost)",
     value="moonshotai/kimi-k2",
     help="Use a lightweight model to extract skills from the generated resume."
 )
