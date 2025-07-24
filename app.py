@@ -1,8 +1,10 @@
 # app/Home.py
 import streamlit as st
 from backend.parser import extract_text_from_pdf
-from backend.llm_interface import get_tailored_resume
+from backend.generate_optimized_resume import get_tailored_resume
 from backend.pdf_render_pandoc import render_pandoc_resume
+from backend.get_resume_skills import extract_skills_from_resume
+from backend.generate_cover_letter import generate_cover_letter_pdf
 import io
 import base64
 import time
@@ -75,8 +77,9 @@ job_title = st.text_input("📌 **Job Title**", placeholder="e.g. Data Scientist
 company_name = st.text_input("🏢 **Company Name**", placeholder="e.g. Hugging Face")
 job_description = st.text_area("🧾 **Job Description**", height=250)
 
-# --- Process Resume ---
-st.subheader("🚀 Optimize")
+
+# --- Optimize Resume ---
+st.subheader("🚀 Optimize Resume")
 
 if st.button("✨ Optimize Resume"):
     if not uploaded_file or not job_description or not api_key:
@@ -85,6 +88,7 @@ if st.button("✨ Optimize Resume"):
         with st.spinner("Optimizing your resume... ⏳"):
             resume_bytes = uploaded_file.read()
             resume_text = extract_text_from_pdf(io.BytesIO(resume_bytes))
+            st.session_state["resume_text"] = resume_text
 
             tailored_md = get_tailored_resume(
                 resume_text=resume_text,
@@ -93,6 +97,7 @@ if st.button("✨ Optimize Resume"):
                 prompt=custom_prompt,
                 model=model_name
             )
+            st.session_state["tailored_md"] = tailored_md
 
             pdf_bytes = render_pandoc_resume(tailored_md)
 
@@ -119,3 +124,66 @@ if st.button("✨ Optimize Resume"):
                 mime="application/pdf"
             )
         
+# --- Extract Skills Section ---
+st.subheader("🧠 Extract Skills from Resume")
+skill_model = st.text_input(
+    "🔍 Model for Skill Extraction",
+    value="moonshotai/kimi-k2",
+    help="Use a lightweight model to extract skills from the generated resume."
+)
+
+if st.button("📋 Extract Skills"):
+    if "tailored_md" not in st.session_state or not api_key:
+        st.error("Generate a resume first.")
+    else:
+        with st.spinner("Extracting skills..."):
+            skills = extract_skills_from_resume(st.session_state["tailored_md"], api_key, skill_model)
+            st.success("Here are the extracted skills:")
+            st.code(skills, language='text')
+
+
+# --- Cover Letter Section ---
+st.subheader("✉️ Generate Cover Letter")
+
+custom_cover_prompt = st.text_area(
+    "📝 Custom Prompt for Cover Letter (optional)",
+    placeholder="Leave blank to use the default professional tone.",
+    height=200
+)
+
+if st.button("✏️ Create Cover Letter"):
+    if not st.session_state.get("resume_text", "") or not job_description or not api_key:
+        st.error("Please fill out all required fields.")
+    else:
+        with st.spinner("Generating cover letter... ⏳"):
+            
+            if full_name:
+                safe_name = full_name.replace(" ", "_")
+            else:
+                words = st.session_state.get("resume_text", "").strip().split()
+                safe_name = f"{words[0]}_{words[1]}" if len(words) >= 2 else "Anonymous"
+
+            pdf_bytes, file_name = generate_cover_letter_pdf(
+                resume_text=st.session_state.get("resume_text", ""),
+                job_description=job_description,
+                api_key=api_key,
+                full_name=full_name,
+                job_title=job_title,
+                company_name=company_name,
+                prompt=custom_cover_prompt,
+                model=model_name, 
+                font_size="12pt"
+            )
+
+            # Show preview in browser
+            base64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
+            pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="1200" height="700" type="application/pdf"></iframe>'
+            st.markdown(pdf_display, unsafe_allow_html=True)
+
+            # Download button
+            st.download_button(
+                label="📥 Download Cover Letter PDF",
+                data=pdf_bytes,
+                file_name=file_name,
+                mime="application/pdf"
+            )

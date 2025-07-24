@@ -1,13 +1,15 @@
+# backend/pdf_render_pandoc.py
 import subprocess
 import tempfile
 import os
 
-def render_pandoc_resume(markdown_text: str) -> bytes:
+def render_pandoc_resume(markdown_text: str, template_file: str = "custom_resume_template.tex") -> bytes:
 
     with tempfile.TemporaryDirectory() as tmpdir:
         md_path = os.path.join(tmpdir, "resume.md")
         pdf_path = os.path.join(tmpdir, "resume.pdf")
-        template_path = os.path.join(os.path.dirname(__file__), "custom_resume_template.tex")
+        template_path = os.path.join(os.path.dirname(__file__), template_file)
+
 
         # Save markdown content
         with open(md_path, "w", encoding="utf-8") as f:

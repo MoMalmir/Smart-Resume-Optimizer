@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse, StreamingResponse
 import io
 import time
 from backend.parser import extract_text_from_pdf
-from backend.llm_interface import get_tailored_resume
+from backend.generate_optimized_resume import get_tailored_resume
 
 from backend.pdf_render_pandoc import render_pandoc_resume
 
