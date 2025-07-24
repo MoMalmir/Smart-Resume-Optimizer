@@ -1,3 +1,4 @@
+
 ---
 title: Smart Resume Optimizer
 emoji: 🎯
@@ -11,9 +12,9 @@ pinned: false
 
 # 🧠 Smart Resume Optimizer
 
-Smart Resume Optimizer helps job seekers generate **tailored, optimized resumes** based on job descriptions using LLMs via [OpenRouter](https://openrouter.ai/). It supports models like Claude 3, GPT-4, Mistral, DeepSeek, and more.
+Smart Resume Optimizer helps job seekers generate **tailored, optimized resumes and cover letters** based on job descriptions using LLMs via [OpenRouter](https://openrouter.ai/). It supports models like Claude 3, GPT-4, Mistral, DeepSeek, and more.
 
-[![🤗 Spaces](https://img.shields.io/badge/🤗%20Spaces-Deployed-blue)](https://huggingface.co/spaces/momalmir/smart-resume-optimizer)
+[![🤗 Spaces](https://img.shields.io/badge/🤗%20Spaces-Deployed-blue)](https://huggingface.co/spaces/msmalmir/smart-resume-optimizer)
 
 ---
 ![Demo](assets/demo.gif)
@@ -40,11 +41,14 @@ Smart Resume Optimizer helps job seekers generate **tailored, optimized resumes*
 
 1. Upload your **PDF resume**
 2. Paste the **job description** you're targeting
-3. Enter a **custom prompt** with instructions for tailoring 
-4. (Optional) Choose a **model**
-5. Click "Optimize" ✨
+3. Enter a **custom prompt** with instructions for tailoring
+4. Choose an **LLM model**
+5. Click **Optimize Resume**
 6. View and download your tailored resume as a **PDF**
+7. Extract comma-separated **skills** from the tailored resume
+8. Generate a personalized **cover letter** tailored to the same job
 
+You can change the font and layout of the resume and cover letter by editing their respective LaTeX template files in `backend/custom_resume_template.tex` and `backend/custom_cover_template.tex`.
 
 The system supports any model on OpenRouter, including:
 
@@ -52,6 +56,8 @@ The system supports any model on OpenRouter, including:
 - `gpt-4-turbo`
 - `deepseek/deepseek-chat`
 - ...and more
+
+For skill extraction, it is recommended to use a **lightweight model** such as `moonshotai/kimi-k2` for faster performance and lower cost. The same model selected for resume generation is used for the cover letter.
 
 ---
 
@@ -86,10 +92,6 @@ You can clone and run the app locally or build your own Docker container.
 
 ### 🔁 Run Locally with Docker
 
-We’ve built a lightweight Docker container for deploying on Hugging Face. It **may work locally**, but for full interactive UI use (with Streamlit), local dev mode is recommended instead.
-
-To try running the container locally:
-
 ```bash
 docker build -t smart-resume .
 docker run -p 7860:7860 smart-resume
@@ -100,12 +102,12 @@ Visit [http://localhost:7860](http://localhost:7860) after the container starts.
 ### 🧪 Manual Setup (No Docker)
 
 ```bash
-git clone https://github.com/momalmir/Smart-Resume-Optimizer.git
+git clone https://github.com/msmalmir/Smart-Resume-Optimizer.git
 cd Smart-Resume-Optimizer
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-streamlit run app/Home.py
+streamlit run app.py
 ```
 
 ### 🌍 Environment Variables
@@ -114,14 +116,6 @@ Create a `.env` file in the root or export directly in your terminal:
 
 ```env
 OPENROUTER_API_KEY=your-api-key-here
-```
-
-### 🧪 Testing (Optional)
-
-If you want to contribute or build CI pipelines, you can run basic tests:
-
-```bash
-pytest
 ```
 
 ### 🚀 Deployment
