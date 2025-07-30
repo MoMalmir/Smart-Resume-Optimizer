@@ -6,6 +6,7 @@ from backend.pdf_render_pandoc import render_pandoc_resume
 from backend.get_resume_skills import extract_skills_from_resume
 from backend.generate_cover_letter import generate_cover_letter_pdf
 import io
+import re
 import base64
 import time
 
@@ -101,16 +102,29 @@ if st.button("✨ Optimize Resume"):
 
             pdf_bytes = render_pandoc_resume(tailored_md)
 
-            if full_name:
-                safe_name = full_name.replace(" ", "_")
-            else:
-                words = resume_text.strip().split()
-                safe_name = f"{words[0]}_{words[1]}" if len(words) >= 2 else "Anonymous"
+            # if full_name:
+            #     safe_name = full_name.replace(" ", "_")
+            # else:
+            #     words = resume_text.strip().split()
+            #     safe_name = f"{words[0]}_{words[1]}" if len(words) >= 2 else "Anonymous"
 
-            safe_job = job_title.replace(" ", "_")
-            safe_company = company_name.replace(" ", "_")
+            # safe_job = job_title.replace(" ", "_")
+            # safe_company = company_name.replace(" ", "_")
+            # file_name = f"{safe_name}_{safe_company}_{safe_job}_resume.pdf"
+
+            # Clean function to remove unwanted characters
+            def clean_filename_part(text: str) -> str:
+                text = text.replace("-", " ").replace(",", "") 
+                return re.sub(r"[^\w\s]", "", text).replace(" ", "_")  # Remove special chars, keep words joined by _
+            
+            # Generate safe names
+            safe_name = full_name.replace(" ", "_") if full_name else (
+                f"{words[0]}_{words[1]}" if len(words) >= 2 else "Anonymous"
+            )
+            safe_job = clean_filename_part(job_title)
+            safe_company = clean_filename_part(company_name)
             file_name = f"{safe_name}_{safe_company}_{safe_job}_resume.pdf"
-
+            
             # Show preview
             base64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
             pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="1200" height="700" type="application/pdf"></iframe>'
