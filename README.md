@@ -1,4 +1,3 @@
-
 ---
 title: Smart Resume Optimizer
 emoji: 🎯
