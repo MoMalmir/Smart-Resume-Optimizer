@@ -62,15 +62,28 @@ def generate_cover_letter_pdf(
     pdf_bytes = render_pandoc_resume(cover_letter_md, template_file="cover_letter_template.tex")
 
 
-    # Fallback to parsed name if not provided
-    if not full_name:
-        name_safe = extract_name_from_resume(resume_text)
-    else:
-        name_safe = full_name.replace(" ", "_")
+    # # Fallback to parsed name if not provided
+    # if not full_name:
+    #     name_safe = extract_name_from_resume(resume_text)
+    # else:
+    #     name_safe = full_name.replace(" ", "_")
 
-    job_safe = job_title.replace(" ", "_") or "Job"
-    company_safe = company_name.replace(" ", "_") or "Company"
+    # job_safe = job_title.replace(" ", "_") or "Job"
+    # company_safe = company_name.replace(" ", "_") or "Company"
 
-    file_name = f"{name_safe}_{company_safe}_{job_safe}_CV.pdf"
+    # file_name = f"{name_safe}_{company_safe}_{job_safe}_CV.pdf"
+
+    # Clean function to remove unwanted characters
+    def clean_filename_part(text: str) -> str:
+        text = text.replace("-", " ").replace(",", "") 
+        return re.sub(r"[^\w\s]", "", text).replace(" ", "_")  # Remove special chars, keep words joined by _
+    
+    # Generate safe names
+    safe_name = full_name.replace(" ", "_") if full_name else (
+        f"{words[0]}_{words[1]}" if len(words) >= 2 else "Anonymous"
+    )
+    safe_job = clean_filename_part(job_title)
+    safe_company = clean_filename_part(company_name)
+            
 
     return pdf_bytes, file_name
