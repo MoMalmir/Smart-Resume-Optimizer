@@ -84,6 +84,6 @@ def generate_cover_letter_pdf(
     )
     safe_job = clean_filename_part(job_title)
     safe_company = clean_filename_part(company_name)
-            
+    file_name = f"{name_safe}_{company_safe}_{job_safe}_CV.pdf"
 
     return pdf_bytes, file_name
