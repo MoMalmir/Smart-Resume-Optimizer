@@ -71,6 +71,6 @@ def generate_cover_letter_pdf(
     job_safe = job_title.replace(" ", "_") or "Job"
     company_safe = company_name.replace(" ", "_") or "Company"
 
-    file_name = f"{name_safe}_CoverLetter_{company_safe}_{job_safe}.pdf"
+    file_name = f"{name_safe}_{company_safe}_{job_safe}_CV.pdf"
 
     return pdf_bytes, file_name
