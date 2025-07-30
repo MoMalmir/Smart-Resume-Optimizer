@@ -109,7 +109,7 @@ if st.button("✨ Optimize Resume"):
 
             safe_job = job_title.replace(" ", "_")
             safe_company = company_name.replace(" ", "_")
-            file_name = f"{safe_name}_{safe_job}_{safe_company}.pdf"
+            file_name = f"{safe_name}_{safe_company}_{safe_job}.pdf"
 
             # Show preview
             base64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
