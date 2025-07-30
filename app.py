@@ -118,6 +118,7 @@ if st.button("✨ Optimize Resume"):
                 return re.sub(r"[^\w\s]", "", text).replace(" ", "_")  # Remove special chars, keep words joined by _
             
             # Generate safe names
+            words = resume_text.strip().split()
             safe_name = full_name.replace(" ", "_") if full_name else (
                 f"{words[0]}_{words[1]}" if len(words) >= 2 else "Anonymous"
             )

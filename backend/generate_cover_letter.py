@@ -79,11 +79,12 @@ def generate_cover_letter_pdf(
         return re.sub(r"[^\w\s]", "", text).replace(" ", "_")  # Remove special chars, keep words joined by _
     
     # Generate safe names
+    words = resume_text.strip().split()
     safe_name = full_name.replace(" ", "_") if full_name else (
         f"{words[0]}_{words[1]}" if len(words) >= 2 else "Anonymous"
     )
     safe_job = clean_filename_part(job_title)
     safe_company = clean_filename_part(company_name)
-    file_name = f"{name_safe}_{company_safe}_{job_safe}_CV.pdf"
+    file_name = f"{safe_name}_{safe_company}_{safe_job}_CV.pdf"
 
     return pdf_bytes, file_name
