@@ -14,9 +14,16 @@ def render_latex_resume(tex_content: str) -> bytes:
             f.write(tex_content)
 
         # Compile to PDF using xelatex (ensure xelatex is installed)
-        subprocess.run([
-            "xelatex", "-interaction=nonstopmode", "-output-directory", tmpdir, tex_path
-        ], check=True)
+        try:
+            subprocess.run([
+                "xelatex", "-interaction=nonstopmode", "-output-directory", tmpdir, tex_path
+            ], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        except subprocess.CalledProcessError as e:
+            print("Xelatex failed with error:")
+            print(e.stdout.decode())
+            print(e.stderr.decode())
+            raise RuntimeError("Xelatex failed. Check the above log for details.")
+
 
         # Read the generated PDF
         with open(pdf_path, "rb") as f:
