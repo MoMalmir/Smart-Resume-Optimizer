@@ -1,8 +1,17 @@
 
 FROM pandoc/extra:latest
 
-RUN apk add --no-cache python3 py3-pip ttf-freefont
-
+#RUN apk add --no-cache python3 py3-pip ttf-freefont
+RUN apk add --no-cache \
+    python3 py3-pip \
+    ttf-freefont \
+    texlive-full \
+    xetex \
+    latexmk \
+    make \
+    fontconfig \
+    bash
+    
 WORKDIR /app
 COPY . /app
 

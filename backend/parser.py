@@ -10,3 +10,4 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
             text += page.extract_text() or ""
             text += "\n"
     return text.strip()
+
