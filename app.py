@@ -82,39 +82,134 @@ Just the formatted resume in Markdown with clean headers and bullet points — n
 
 
 default_latex_prompt = """
-You are a resume editing assistant.
+- Please modify the latex original resume to emphasize the most relevant skills, projects, and experience for the job.
+- Do not change the latex structure, syntax, or formatting commands.
+- Do not include triple backticks, YAML blocks, or any explanations. Only output the revised LaTeX file content directly.
+- Your task is to modify the **content** if needed (not structure) of the LaTeX resume to emphasize the most relevant skills, projects, and experience for the job.
+- Try to keep the resume to one and half page if possible.
+- Try to do not change the project that much if it is not necessary.
+- Keep relevant skills and experience for the job and remove the less relevant ones if needed to save space.
+- Keep the Selected Publications section but only keep at most 2 of the most relevant ones to the job.
+- Keep the Leadership and Mentorship section
 
-Your task is to revise the following LaTeX-formatted resume **without altering the LaTeX structure, syntax, or formatting commands**. Your objective is to **tailor the resume content** to better match the provided job description using only truthful information from the original resume.
+- If the resume contains tools, frameworks, or skills not mentioned in the job description, replace them with similar or more relevant ones only if they are logically equivalent. For example, replace “Tableau” with “PowerBI” if PowerBI is mentioned in the job description. Do not replace if the substitution is not ethically or professionally accurate.
+- Highlights measurable achievements (use the XYZ format: Accomplished X, measured by Y, by doing Z),
+- Prioritize listing projects from most relevant to least relevant based on the job description.
+- Briefly mention the tools used and skills developed in each project if relevant,
+- Identify and prioritize keywords and skills (hard and soft) in the job description,
+- **Do not invent or add any projects, skills, tools, courses, or experiences that do not exist in the original resume. Only use content from the provided resume. Be strictly truthful and ethical**
+- If possible, while staying honest, incorporate as many relevant keywords from the job description as you can to optimize the resume for Applicant Tracking Systems (ATS).
+- Follows consistent and professional formatting,
+- Avoid generic or vague claims.
+- Include only the most relevant projects and publications based on the job description.
+- Remove any projects that are not closely aligned with the target role or do not showcase relevant skills.
+- Select and list only the top 1–2 publications that best support the role, focusing on research areas, tools, or methods that match the job description.
 
----
+- Ensure all environments (e.g., `\begin{itemize}`) are properly closed with their corresponding `\end{...}`
 
-**Instructions:**
-
-- Do NOT delete or change any LaTeX commands (`\section`, `\begin{itemize}`, `\item`, etc.)
-- Keep the formatting of fonts, spacing, and layout exactly as in the original
-- Only modify the **text inside sections and bullet points** (e.g., reword descriptions, reorder items, replace skills with more relevant ones if appropriate)
-- DO NOT fabricate, exaggerate, or invent any achievements or skills
-- Optimize language to highlight achievements, use active verbs, and include metrics when available
-- Focus especially on modifying the most relevant sections (e.g., `\section{Experience}`, `\section{Projects}`, `\section{Skills}`) to match keywords and qualifications in the job description
-- Keep content concise — do not add lengthy paragraphs
-- Do NOT output code blocks, explanations, or backticks — only return the revised LaTeX file content directly
-
----
-
-**Example of allowed edits:**
-
-✅ Change:
-`\item Developed X tool` → `\item Built X tool to streamline workflow, reducing manual effort by 40%`
+- Escape all LaTeX special characters in text content. For example:
+  - Use `\&` instead of `&`
+  - Use `\%` instead of `%`
+  - Use `\_` instead of `_`
+  - Use `\#` instead of `#`
+  - Use `\textasciitilde{}` instead of `~`
+  - Use `\textasciicircum{}` instead of `^`
+  - Use `\textbackslash{}` instead of `\`
 
 ❌ Do NOT:
 - Add a new `\section` not in the original
 - Convert content to Markdown or plain text
 - Break the LaTeX syntax
+- Output code fences (no ```latex)
+- Do not include triple backticks, YAML blocks, or any explanations.
 
----
+🛠️ Output:
+Return valid LaTeX starting with `\documentclass` and ending with `\end{document}`
 
-**Your output must be a valid `.tex` file content with all LaTeX commands preserved.**
 """
+
+# default_latex_prompt = """
+# You are a resume editing assistant.
+
+# Your task is to revise the following LaTeX-formatted resume **without altering the LaTeX structure, syntax, or formatting commands**. 
+# Your task is to modify the **content** (not structure) of the LaTeX resume to emphasize the most relevant skills, projects, and experience for the job.
+
+
+# ---
+
+# **Instructions:**
+
+# - Do NOT delete or change any LaTeX commands (`\section`, `\begin{itemize}`, `\item`, etc.)
+# - Keep the formatting of fonts, spacing, and layout exactly as in the original
+# - Only modify the **text inside sections and bullet points** (e.g., reword descriptions, reorder items, replace skills with more relevant ones if appropriate)
+# - Do NOT introduce new sections or add entirely new content
+# - DO NOT fabricate, exaggerate, or invent any achievements or skills
+# - Optimize language to highlight achievements, use active verbs, and include metrics when available
+# - Focus especially on modifying the most relevant sections (e.g., `\section{Experience}`, `\section{Projects}`, `\section{Skills}`) to match keywords and qualifications in the job description
+# - Keep content concise — do not add lengthy paragraphs
+# - Ensure all environments (e.g., `\begin{itemize}`) are properly closed with their corresponding `\end{...}`
+# - Do NOT output code blocks, explanations, or backticks — only return the revised LaTeX file content directly
+# - Your final output must stay within the original layout constraints and should not cause the resume to exceed one page when rendered as PDF.
+# - You may **remove or shorten** items or skills that are clearly unrelated to the job posting, if needed to save space
+# - Do not output explanations, Markdown, or backticks — return only the raw LaTeX resume code
+
+# ---
+# 📝 Page Length Constraint:
+# Ensure that the revised LaTeX resume fits **on a single page** when compiled to PDF. 
+# To do this:
+# - Trim overly detailed bullet points
+# - Condense redundant or less relevant content
+# - Prioritize clarity and brevity
+# - Avoid adding new content unless necessary
+# - Avoid wordiness or long sentences
+
+
+# ---
+
+# **Example of allowed edits:**
+
+# ✅ Change:
+# - Reorder, reword, or replace bullet points to match job keywords
+# - Modify only the **inside** of existing sections or items
+# - Add achievements, active verbs, or clarifications if supported by original resume
+# ❌ Do NOT:
+# - Add a new `\section` not in the original
+# - Convert content to Markdown or plain text
+# - Break the LaTeX syntax
+# - Output code fences (no ```latex)
+
+# ---
+
+# 🛠️ Output:
+# Return valid LaTeX starting with `\documentclass` and ending with `\end{document}`
+
+# """
+
+
+#- `\item Developed X tool` → `\item Built X tool to streamline workflow, reducing manual effort by 40%`
+
+
+
+# default_latex_prompt = """
+# You are given the full LaTeX source of a resume and a job description.
+
+# Your task is to modify the **content** (not structure) of the LaTeX resume to emphasize the most relevant skills, projects, and experience for the job.
+
+# 🟢 Do:
+# - Reorder, reword, or replace bullet points to match job keywords
+# - Modify only the **inside** of existing sections or items
+# - Add achievements, active verbs, or clarifications if supported by original resume
+
+# 🔴 Do not:
+# - Delete any sections (like Publications, Leadership, etc.)
+# - Add or remove \section or \begin{itemize} blocks
+# - Break LaTeX syntax or convert to Markdown
+# - Output code fences (no ```latex)
+
+# 🛠️ Output:
+# Return valid LaTeX starting with `\documentclass` and ending with `\end{document}`
+
+# """
 
 
 

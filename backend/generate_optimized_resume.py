@@ -26,7 +26,7 @@ def get_tailored_resume(
         model=model,
         messages=[{"role": "user", "content": user_prompt}],
         temperature=0.4,
-        max_tokens=1500,
+        max_tokens=10000,
 
     )
 

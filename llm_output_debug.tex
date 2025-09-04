@@ -1,0 +1,111 @@
+\documentclass[9pt,letterpaper]{extarticle}
+% Use sans serif throughout
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+% FontAwesome for icons
+\usepackage{fontawesome5}
+
+% Page geometry
+\usepackage[margin=1cm]{geometry}
+\pagestyle{empty}
+
+% Tight itemize
+\usepackage{enumitem}
+\setlist[itemize]{label=\textbullet, left=1.5em, nosep, topsep=0pt}
+
+% Hyperlinks
+\usepackage[hidelinks]{hyperref}
+
+% Reduce space before and after sections and add spacing before next section
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{1ex}{1ex}
+\titleformat{\section}{\normalsize\bfseries}{}{0em}{}[\vspace{0.0ex}]
+
+% Section separator line: paragraph break, rule, small gap
+\newcommand{\sectionsep}{%
+  \par
+  \vspace{-3ex}% tighten space above rule
+  \noindent\rule{\textwidth}{0.4pt}% rule line
+  \vspace{0ex}% space below rule
+  \par
+}
+
+% Avoid hyphenation and ragged right text
+\raggedright
+
+% Begin document
+\begin{document}
+\begin{center}
+  {\LARGE\bfseries Mostafa Malmir}\\[0.5ex]
+  {\small
+    \faEnvelope\,\href{mailto:malmir.edumail@gmail.com}{malmir.edumail@gmail.com} \quad
+    \faPhone\, (210)~350--9263 \quad
+    \faMapMarker\, San Antonio, TX\\
+    \faLinkedin\,\href{https://www.linkedin.com/in/mostafa-malmir/}{linkedin.com/in/mostafa-malmir} \quad
+    \faGithub\,\href{https://github.com/momalmir}{github.com/momalmir} \quad
+    \faGraduationCap\,\href{https://scholar.google.com/citations?user=GZ4wP8YAAAAJ&hl=en}{Google Scholar}
+  }
+\end{center}
+
+% SUMMARY
+\section*{SUMMARY}
+\sectionsep
+PhD-level AI/ML Engineer with 4 years of experience in developing and deploying machine learning models, specializing in applications for drug discovery and development. Proficient in Python, PyTorch, and deep learning frameworks, with extensive experience in backend development for AI-powered platforms.
+
+% EXPERIENCE
+\section*{EXPERIENCE}
+\sectionsep
+\textbf{Personal Projects}  \hfill 2022--Present
+\begin{itemize}
+  \item \textbf{Smart Resume Optimizer (LLM-Powered Resume Builder):} Developed a full-stack web app integrating multiple LLMs for automated resume and cover letter generation, significantly enhancing job application processes.
+
+  \item \textbf{Smart Job Alerts (Automated Job Matching Platform):} Engineered an AI system for matching resumes to job postings using LLMs, achieving over 90\% accuracy in delivering daily tailored job matches.
+
+  \item \textbf{RAG Chatbot (Document QA):} Implemented a QA system over user-uploaded documents, utilizing hybrid retrieval and LLM summarization, enhancing information accessibility and user interaction.
+
+  \item \textbf{Model Fine-Tuning (Dialogue Summarization Case Study):} Fine-tuned advanced language models for efficient and effective dialogue summarization, maintaining high performance with reduced computational resources.
+
+\end{itemize}
+\textbf{Graduate Research Assistant}, University of Texas at San Antonio \hfill 2022--Present
+\begin{itemize}
+  \item \textbf{scTRaCT (Python Package):} Developed a transformer-based model for cell-type annotation in scRNA-seq, demonstrating high accuracy and interpretability, particularly for rare cell types.
+
+  \item \textbf{DFU Project:} Collaborated on a transformer model to predict healing outcomes from single-cell data, achieving over 90\% accuracy and identifying critical gene markers for clinical follow-up.
+
+\end{itemize}
+
+% TECHNICAL SKILLS
+\section*{TECHNICAL SKILLS}\sectionsep
+\textbf{Programming \& Data Handling:} Python, R, SQL, PySpark, Bash, Linux (CLI), MATLAB\\
+\textbf{ML/AI:} Supervised \& Unsupervised Learning, Deep Learning (CNNs, RNNs, Transformers), NLP, GenAI (LangChain, LoRA, Hugging Face)\\
+\textbf{MLOps \& Deployment:} CI/CD, MLflow, Docker, GitHub Actions, FastAPI, Streamlit, AWS (S3, EC2, Lambda, SageMaker), GCP, Azure\\
+\textbf{Frameworks \& Libraries:} PyTorch, TensorFlow, scikit-learn, XGBoost, LightGBM, Pandas, NumPy, Seaborn, Matplotlib\\
+\textbf{Bioinformatics \& Computational Biology:} NGS, scRNA-seq analysis, cell type annotation, perturbation \& stability analysis, rare cell type detection, genomics \& gene marker analysis \\
+
+% EDUCATION
+\section*{EDUCATION}
+\sectionsep
+University of Texas at San Antonio, PhD Electrical and Computer Engineering \hfill 2022--Present\\
+Tarbiat Modares University, MS Electrical and Computer Engineering \hfill 2013--2016\\
+Enghelab Eslami Technical University, BS Electrical Engineering \hfill 2009--2013
+
+% SELECTED PUBLICATIONS
+\section*{SELECTED PUBLICATIONS}
+\sectionsep
+\begin{itemize}
+  \item \textbf{Malmir, M.}, et al. ``Leveraging Transformer Models to Identify Gene Signatures in Healing Diabetic Foot Ulcers Through Single-cell RNA Sequencing Data.'' In \emph{Current Genomics 2025} (under review).
+  \item \textbf{Malmir, M.}, et al. ``scTRaCT: Transformer-based single-cell RNA-seq cell-type identification with a focus on rare populations.'' In \emph{ICIBM 2025} (under review).
+\end{itemize}
+
+% LEADERSHIP & MENTORSHIP
+\section*{LEADERSHIP \& MENTORSHIP}
+\sectionsep
+\begin{itemize}
+  \item \textbf{President (Aug 2023--Sep 2024) \& Vice President (Oct 2024--Present), Iranian Student Organization, UTSA}: Led a team of six to fundraise and run cultural events for a 200-member community, fostering Iranian heritage and alumni connections.
+  \item \textbf{Graduate Mentor, NSF REU Program (Summer 2023 \& 2024)}: Guided two undergraduates in computational-biology research—advising on data analysis, pipeline development, and experimental design.
+\end{itemize}
+
+\end{document}
