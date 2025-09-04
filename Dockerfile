@@ -38,9 +38,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     pandoc \
     python3 python3-pip \
-    ttf-freefont \
+    fonts-freefont-ttf \
     texlive-full \
-    xetex \
     latexmk \
     make \
     fontconfig \
