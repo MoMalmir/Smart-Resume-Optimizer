@@ -29,26 +29,31 @@
 
 
 
-FROM pandoc/extra:latest
+FROM debian:bullseye-slim
 
+# Avoid prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apk update && apk add --no-cache \
-    python3 py3-pip \
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    pandoc \
+    python3 python3-pip \
     ttf-freefont \
     texlive-full \
-    texmf-dist-xetex \
+    xetex \
     latexmk \
     make \
     fontconfig \
     bash \
-    texlive-fontsextra
+ && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 COPY . /app
 
+# Set permissions for Streamlit
 RUN mkdir -p /app/.streamlit && chmod -R 777 /app/.streamlit
 
-# Install Python requirements
+# Install Python dependencies
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 ENV HOME=/app
