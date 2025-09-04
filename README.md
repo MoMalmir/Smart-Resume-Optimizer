@@ -38,9 +38,9 @@ Smart Resume Optimizer helps job seekers generate **tailored, optimized resumes 
 
 ## ✨ How It Works
 
-1. Upload your **PDF resume**
+1. Upload your **PDF** file or **LaTeX** file of resume
 2. Paste the **job description** you're targeting
-3. Enter a **custom prompt** with instructions for tailoring
+3. Enter an optional **custom prompt** with instructions for tailoring (there are two default prompts for PDF and LaTeX input the app will use if you do not provide any)
 4. Choose an **LLM model**
 5. Click **Optimize Resume**
 6. View and download your tailored resume as a **PDF**
@@ -48,6 +48,7 @@ Smart Resume Optimizer helps job seekers generate **tailored, optimized resumes 
 8. Generate a personalized **cover letter** tailored to the same job
 
 You can change the font and layout of the resume and cover letter by editing their respective LaTeX template files in `backend/custom_resume_template.tex` and `backend/custom_cover_template.tex`.
+
 
 The system supports any model on OpenRouter, including:
 
@@ -74,7 +75,7 @@ This application runs entirely in your browser and **does not store or send your
 
 To use the hosted app, you’ll need:
 
-- 📄 A resume in **PDF format**
+- 📄 A resume in **PDF** or **LaTeX** format
 - 📋 A job description you're applying to
 - ✍️ A **custom prompt** describing how to tailor the resume
 - 🔑 An **OpenRouter API key** (sign up at [openrouter.ai](https://openrouter.ai/))
