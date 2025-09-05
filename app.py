@@ -243,6 +243,18 @@ else:
     uploaded_file = st.file_uploader("**Your resume (LaTeX .tex only)**", type=["tex"])
 
 
+# --- Resume Ingestion ---
+if uploaded_file:
+    resume_bytes = uploaded_file.read()
+    if resume_format == "LaTeX (.tex)":
+        resume_text = resume_bytes.decode("utf-8")
+    else:
+        resume_text = extract_text_from_pdf(io.BytesIO(resume_bytes))
+    st.session_state["resume_text"] = resume_text
+    st.success("Resume loaded successfully.")
+    st.info("Note: Skills and cover letter will use the latest uploaded or optimized resume.")
+
+
 # --- API Key + Caching ---
 st.subheader("🔐 API Key & Model")
 api_key = st.text_input(
@@ -302,46 +314,32 @@ if st.button("✨ Optimize Resume"):
         st.error("Please fill out all required fields.")
     else:
         with st.spinner("Optimizing your resume... ⏳"):
-            resume_bytes = uploaded_file.read()
-            if resume_format == "LaTeX (.tex)":
-                resume_text = resume_bytes.decode("utf-8")  # treat as plain text
-            else:
-                resume_text = extract_text_from_pdf(io.BytesIO(resume_bytes))
-            st.session_state["resume_text"] = resume_text
-
+            resume_text = st.session_state.get("resume_text", "")
             tailored_md = get_tailored_resume(
                 resume_text=resume_text,
                 job_description=job_description,
                 api_key=api_key,
-                # Insert default prompt based on resume format if no custom prompt is provided
-                prompt = custom_prompt.strip() if custom_prompt else (
-                default_latex_prompt if resume_format == "LaTeX (.tex)" else default_pdf_prompt
+                prompt=custom_prompt.strip() if custom_prompt else (
+                    default_latex_prompt if resume_format == "LaTeX (.tex)" else default_pdf_prompt
                 ),
                 model=model_name
             )
             st.session_state["tailored_md"] = tailored_md
+            st.session_state["resume_text"] = tailored_md # <- use for downstream
+
 
             pdf_bytes = (
                 render_latex_resume(tailored_md)
                 if resume_format == "LaTeX (.tex)"
                 else render_pandoc_resume(tailored_md)
             )
-            # if full_name:
-            #     safe_name = full_name.replace(" ", "_")
-            # else:
-            #     words = resume_text.strip().split()
-            #     safe_name = f"{words[0]}_{words[1]}" if len(words) >= 2 else "Anonymous"
 
-            # safe_job = job_title.replace(" ", "_")
-            # safe_company = company_name.replace(" ", "_")
-            # file_name = f"{safe_name}_{safe_company}_{safe_job}_resume.pdf"
 
-            # Clean function to remove unwanted characters
             def clean_filename_part(text: str) -> str:
-                text = text.replace("-", " ").replace(",", "") 
-                return re.sub(r"[^\w\s]", "", text).replace(" ", "_")  # Remove special chars, keep words joined by _
-            
-            # Generate safe names
+                text = text.replace("-", " ").replace(",", "")
+                return re.sub(r"[^\w\s]", "", text).replace(" ", "_")
+
+
             words = resume_text.strip().split()
             safe_name = full_name.replace(" ", "_") if full_name else (
                 f"{words[0]}_{words[1]}" if len(words) >= 2 else "Anonymous"
@@ -349,13 +347,13 @@ if st.button("✨ Optimize Resume"):
             safe_job = clean_filename_part(job_title)
             safe_company = clean_filename_part(company_name)
             file_name = f"{safe_name}_{safe_company}_{safe_job}_resume.pdf"
-            
-            # Show preview
+
+
             base64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
             pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="1200" height="700" type="application/pdf"></iframe>'
             st.markdown(pdf_display, unsafe_allow_html=True)
 
-            # Download button
+
             st.download_button(
                 label="📥 Download Optimized Resume",
                 data=pdf_bytes,
@@ -372,11 +370,13 @@ skill_model = st.text_input(
 )
 
 if st.button("📋 Extract Skills"):
-    if "tailored_md" not in st.session_state or not api_key:
-        st.error("Generate a resume first.")
+    if not st.session_state.get("resume_text") or not api_key:
+        st.error("Please upload or optimize your resume and enter API key.")
     else:
         with st.spinner("Extracting skills..."):
-            skills = extract_skills_from_resume(st.session_state["tailored_md"], api_key, skill_model)
+            skills = extract_skills_from_resume(
+            st.session_state["resume_text"], api_key, skill_model
+            )
             st.success("Here are the extracted skills:")
             st.code(skills, language='text')
 
@@ -384,23 +384,25 @@ if st.button("📋 Extract Skills"):
 # --- Cover Letter Section ---
 st.subheader("✉️ Generate Cover Letter")
 
+
 custom_cover_prompt = st.text_area(
     "📝 Custom Prompt for Cover Letter (optional)",
     placeholder="Leave blank to use the default professional tone.",
     height=200
 )
 
+
 if st.button("✏️ Create Cover Letter"):
-    if not st.session_state.get("resume_text", "") or not job_description or not api_key:
+    if not st.session_state.get("resume_text") or not job_description or not api_key:
         st.error("Please fill out all required fields.")
     else:
         with st.spinner("Generating cover letter... ⏳"):
-            
             if full_name:
                 safe_name = full_name.replace(" ", "_")
             else:
                 words = st.session_state.get("resume_text", "").strip().split()
                 safe_name = f"{words[0]}_{words[1]}" if len(words) >= 2 else "Anonymous"
+
 
             pdf_bytes, file_name = generate_cover_letter_pdf(
                 resume_text=st.session_state.get("resume_text", ""),
@@ -410,16 +412,16 @@ if st.button("✏️ Create Cover Letter"):
                 job_title=job_title,
                 company_name=company_name,
                 prompt=custom_cover_prompt,
-                model=model_name, 
+                model=model_name,
                 font_size="12pt"
             )
 
-            # Show preview in browser
+
             base64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
             pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="1200" height="700" type="application/pdf"></iframe>'
             st.markdown(pdf_display, unsafe_allow_html=True)
 
-            # Download button
+
             st.download_button(
                 label="📥 Download Cover Letter PDF",
                 data=pdf_bytes,
